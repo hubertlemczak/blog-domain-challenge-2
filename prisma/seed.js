@@ -16,17 +16,35 @@ async function main() {
           pictureUrl: 'somepic.com',
         },
       },
-      comments: {
-        create: [
-          {
-            content: 'my parent comment',
-          },
-        ],
-      },
     },
     include: {
       profile: true,
-      comments: true,
+    },
+  });
+
+  await prisma.category.createMany({
+    data: [
+      {
+        name: 'funny',
+      },
+      {
+        name: 'programming',
+      },
+    ],
+  });
+
+  const createdPost = await prisma.post.create({
+    data: {
+      title: 'my first post',
+      content: 'my first post content',
+      imageUrl: 'image.com/img',
+      userId: createdUser.id,
+      categories: {
+        connect: [{ name: 'funny' }, { name: 'programming' }],
+      },
+    },
+    include: {
+      categories: true,
     },
   });
 
@@ -34,8 +52,11 @@ async function main() {
     data: {
       content: 'my second parent comment',
       userId: createdUser.id,
+      postId: createdPost.id,
       replies: {
-        create: [{ content: 'reply', userId: createdUser.id }],
+        create: [
+          { content: 'reply', userId: createdUser.id, postId: createdPost.id },
+        ],
       },
     },
     include: { replies: true },
@@ -48,6 +69,7 @@ async function main() {
   });
 
   console.log(createdUser);
+  console.log(createdPost);
   console.log(createdComment);
   console.log(JSON.stringify(allUsers, null, 2));
 }

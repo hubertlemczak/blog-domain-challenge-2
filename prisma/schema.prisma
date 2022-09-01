@@ -20,6 +20,7 @@ model User {
   updatedAt DateTime  @updatedAt
   profile   Profile?
   comments  Comment[]
+  posts     Post[]
 }
 
 model Profile {
@@ -42,6 +43,30 @@ model Comment {
   content   String
   userId    Int
   user      User      @relation(fields: [userId], references: [id])
+  postId    Int
+  post      Post      @relation(fields: [postId], references: [id])
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+}
+
+model Post {
+  id          Int        @id @default(autoincrement())
+  title       String     @unique
+  content     String
+  imageUrl    String
+  userId      Int
+  user        User       @relation(fields: [userId], references: [id])
+  publishedAt DateTime?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  comments    Comment[]
+  categories  Category[]
+}
+
+model Category {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  posts     Post[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
