@@ -83,18 +83,20 @@ async function main() {
     include: { replies: true },
   });
 
-  const allUsers = await prisma.user.findMany({
-    include: {
-      comments: true,
+  const createdReactionType = await prisma.reactionType.create({
+    data: {
+      name: 'like',
     },
   });
 
-  const comm = await prisma.comment.findUnique({
-    where: {
-      id: 2,
+  const createdReaction = await prisma.reaction.create({
+    data: {
+      postId: createdPost.id,
+      userId: createdUser.id,
+      type: 'like',
     },
     include: {
-      parent: true,
+      reactionType: true,
     },
   });
 
@@ -102,8 +104,8 @@ async function main() {
   console.log(createdPost);
   console.log(createdPost2);
   console.log(createdComment);
-  console.log(JSON.stringify(allUsers, null, 2));
-  console.log(comm);
+  console.log(createdReactionType);
+  console.log(createdReaction);
 }
 
 main()

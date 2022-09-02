@@ -13,6 +13,7 @@ const formatPostRes = data => {
       updatedAt,
       comments,
       categories,
+      reactions,
     } = post;
 
     res.push({
@@ -28,6 +29,8 @@ const formatPostRes = data => {
       categories: categories.map(category => {
         return { id: category.id, name: category.name };
       }),
+      reactions,
+      likes: reactions.length,
     });
   }
   return res;

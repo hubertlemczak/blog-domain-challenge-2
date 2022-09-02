@@ -31,6 +31,11 @@ const getAllPosts = async (pagination, order, published) => {
           },
         },
         categories: true,
+        reactions: {
+          where: {
+            type: 'like',
+          },
+        },
       },
     });
 
