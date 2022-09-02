@@ -1,7 +1,11 @@
 const express = require('express');
+
 const router = express.Router();
+const userPostsRouter = require('./posts/userPosts');
 
 const controller = require('../controllers/users');
+
+router.use('/:userId/posts', userPostsRouter);
 
 router.post('/', controller.createUser);
 

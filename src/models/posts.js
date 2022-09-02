@@ -17,9 +17,11 @@ const getAllPosts = async (pagination, order) => {
           },
         },
         comments: {
-          distinct: ['userId'],
+          where: {
+            parentId: null,
+          },
           include: {
-            replies: true,
+            replies: {},
           },
         },
         categories: true,
@@ -49,7 +51,9 @@ const getUserPosts = async (userId, pagination) => {
           },
         },
         comments: {
-          distinct: ['userId'],
+          where: {
+            parentId: null,
+          },
           include: {
             replies: true,
           },
@@ -146,7 +150,9 @@ const updatePost = async (
           },
         },
         comments: {
-          distinct: ['userId'],
+          where: {
+            parentId: null,
+          },
           include: {
             replies: true,
           },
@@ -178,7 +184,9 @@ const deletePost = async (userId, id) => {
           },
         },
         comments: {
-          distinct: ['userId'],
+          where: {
+            parentId: null,
+          },
           include: {
             replies: true,
           },
