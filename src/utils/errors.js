@@ -60,10 +60,19 @@ const categoriesErrors = (res, err) => {
   }
 };
 
+const reactionsErrors = (res, err) => {
+  if (err === 409) {
+    return res.status(409).json({
+      error: 'A reaction with the provided user id already exists',
+    });
+  }
+};
+
 module.exports = {
   generalErrors,
   usersErrors,
   postsErrors,
   commentsErrors,
   categoriesErrors,
+  reactionsErrors,
 };
