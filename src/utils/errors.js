@@ -24,7 +24,22 @@ const usersErrors = (res, err) => {
   }
 };
 
+const postsErrors = (res, err) => {
+  if (err === 409) {
+    return res.status(409).json({
+      error: 'A post with the provided title already exists',
+    });
+  }
+
+  if (err === 404) {
+    return res.status(404).json({
+      error: 'A user or post with the provided id does not exist',
+    });
+  }
+};
+
 module.exports = {
   generalErrors,
   usersErrors,
+  postsErrors,
 };
