@@ -3,9 +3,15 @@ const prisma = require('../utils/prisma');
 const { SUCCESS, FAILED } = require('../utils/vars');
 const { disconnectCategories } = require('./utils');
 
-const getAllPosts = async (pagination, order) => {
+const getAllPosts = async (pagination, order, published) => {
+  console.log(published ? null : undefined);
   try {
     const dbRes = await prisma.post.findMany({
+      where: {
+        publishedAt: {
+          not: published,
+        },
+      },
       ...pagination,
       orderBy: {
         createdAt: order === 'oldest' ? 'asc' : 'desc',
@@ -72,7 +78,10 @@ const getUserPosts = async (userId, pagination) => {
   }
 };
 
-const createPost = async (userId, { title, content, imageUrl, categories }) => {
+const createPost = async (
+  userId,
+  { title, content, imageUrl, publishedAt, categories }
+) => {
   try {
     const dbRes = await prisma.post.create({
       data: {
@@ -80,6 +89,7 @@ const createPost = async (userId, { title, content, imageUrl, categories }) => {
         content,
         imageUrl,
         userId,
+        publishedAt,
         categories: {
           connectOrCreate: categories?.map(category => {
             return {

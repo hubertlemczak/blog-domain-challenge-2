@@ -1,4 +1,3 @@
-const { Prisma } = require('@prisma/client');
 const prisma = require('../utils/prisma');
 const { FAILED, SUCCESS } = require('../utils/vars');
 

@@ -5,8 +5,13 @@ const { SUCCESS } = require('../utils/vars');
 
 const getAllPosts = async (req, res) => {
   const pages = pagination(req.query.page, req.query.per_page);
+  const published = req.query.published === 'true' ? null : undefined;
 
-  const [status, dbRes] = await model.getAllPosts(pages, req.query.order_by);
+  const [status, dbRes] = await model.getAllPosts(
+    pages,
+    req.query.order_by,
+    published
+  );
 
   if (status === SUCCESS) {
     return res.status(200).json({
