@@ -12,7 +12,7 @@ app.use(cors());
 app.use(morgan('dev'));
 app.use(express.json());
 
-const postsRouter = require('./routers/posts');
+const postsRouter = require('./routers/posts/posts');
 const categoriesRouter = require('./routers/categories');
 const usersRouter = require('./routers/users');
 
