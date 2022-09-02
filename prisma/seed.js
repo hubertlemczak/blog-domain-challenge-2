@@ -48,6 +48,22 @@ async function main() {
     },
   });
 
+  setTimeout(() => {}, 1000);
+  const createdPost2 = await prisma.post.create({
+    data: {
+      title: 'my second post',
+      content: 'my second post content',
+      imageUrl: 'image.com/img',
+      userId: createdUser.id,
+      categories: {
+        connect: [{ name: 'programming' }],
+      },
+    },
+    include: {
+      categories: true,
+    },
+  });
+
   const createdComment = await prisma.comment.create({
     data: {
       content: 'my second parent comment',
@@ -56,6 +72,11 @@ async function main() {
       replies: {
         create: [
           { content: 'reply', userId: createdUser.id, postId: createdPost.id },
+          {
+            content: 'reply number 2',
+            userId: createdUser.id,
+            postId: createdPost.id,
+          },
         ],
       },
     },
@@ -68,10 +89,21 @@ async function main() {
     },
   });
 
+  const comm = await prisma.comment.findUnique({
+    where: {
+      id: 2,
+    },
+    include: {
+      parent: true,
+    },
+  });
+
   console.log(createdUser);
   console.log(createdPost);
+  console.log(createdPost2);
   console.log(createdComment);
   console.log(JSON.stringify(allUsers, null, 2));
+  console.log(comm);
 }
 
 main()
