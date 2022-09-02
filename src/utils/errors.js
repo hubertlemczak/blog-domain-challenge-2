@@ -46,9 +46,24 @@ const commentsErrors = (res, err) => {
   }
 };
 
+const categoriesErrors = (res, err) => {
+  if (err === 409) {
+    return res.status(409).json({
+      error: 'A category with the provided name already exists',
+    });
+  }
+
+  if (err === 404) {
+    return res.status(404).json({
+      error: 'A category with the provided id does not exist',
+    });
+  }
+};
+
 module.exports = {
   generalErrors,
   usersErrors,
   postsErrors,
   commentsErrors,
+  categoriesErrors,
 };
