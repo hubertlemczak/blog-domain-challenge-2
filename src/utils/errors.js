@@ -38,8 +38,17 @@ const postsErrors = (res, err) => {
   }
 };
 
+const commentsErrors = (res, err) => {
+  if (err === 404) {
+    return res.status(404).json({
+      error: 'A post or comment with the provided id does not exist',
+    });
+  }
+};
+
 module.exports = {
   generalErrors,
   usersErrors,
   postsErrors,
+  commentsErrors,
 };
